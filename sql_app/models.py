@@ -27,5 +27,6 @@ class Passing(Base):
     WINNER_SCORE = Column(Integer) 
     LOSER_SCORE = Column(Integer)  
     SPREAD = Column(Integer)       
-    YEAR = Column(String, primary_key=True)
-    WEEK = Column(String, primary_key=True) 
+    YEAR = Column(Integer)
+    WEEK = Column(Integer)
+    PKCOL = Column(String, primary_key=True) 
