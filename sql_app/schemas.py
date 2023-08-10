@@ -4,7 +4,6 @@ from pydantic import BaseModel
 class PassingBase(BaseModel):
     pass
 
-
 class Passing(PassingBase):
     RK: int
     TEAM: str
@@ -26,8 +25,9 @@ class Passing(PassingBase):
     WINNER_SCORE: int 
     LOSER_SCORE: int  
     SPREAD: int       
-    YEAR: str
-    WEEK: str 
+    YEAR: int
+    WEEK: int
+    PKCOL: str 
 
     class Config:
         orm_mode = True
