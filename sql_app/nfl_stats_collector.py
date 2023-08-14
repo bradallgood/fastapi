@@ -4,18 +4,20 @@ import matplotlib.pyplot as plt
 from unicodedata import normalize
 import psycopg2
 from sqlalchemy import create_engine
-
   
 conn_string = 'postgresql://brada:Feasant1@172.28.176.1/nfl'
 db = create_engine(conn_string)
 
-week = 1
-for year in [2021,2022]:
-    while week <= 2:
+
+for year in ['2021','2022']:
+    week = 1
+    print(f'year is {year}')
+    while week <= 18:
         print(f'=========================== Week {week} =========================')
         for stats_cat in ['passing','rushing','receiving']:
             print(f'---------------------- Catagory {stats_cat} ----------------------')
-            table_qb = pd.read_html(f'https://www.espn.com/nfl/weekly/leaders/_/week/{week}/seasontype/2/type/{stats_cat}')
+            #table_qb = pd.read_html(f'https://www.espn.com/nfl/weekly/leaders/_/week/{week}/seasontype/2/type/{stats_cat}')
+            table_qb = pd.read_html(f'https://www.espn.com/nfl/weekly/leaders/_/week/{week}/year/{year}/seasontype/2/type/{stats_cat}')
             qb = table_qb[6]
             cols = qb.columns.tolist()
             new_cols = qb.loc[1].tolist()
@@ -35,7 +37,7 @@ for year in [2021,2022]:
             qb['YEAR'] = year
             qb[['YEAR']] = qb[['YEAR']].apply(pd.to_numeric)
             qb['WEEK'] = week
-            qb[['YEAR']] = qb[['YEAR']].apply(pd.to_numeric) 
+            qb[['WEEK']] = qb[['WEEK']].apply(pd.to_numeric) 
             qb["PKCOL"] = qb['YEAR'].astype(str) +"-"+ qb["WEEK"].astype(str)+"-"+ qb["NAME"].astype(str)
             if stats_cat in ['rushing','receiving']:
                 qb = qb.loc[:, qb.columns.notna()]
@@ -47,8 +49,8 @@ for year in [2021,2022]:
                 qb[['RK', 'CAR', 'YDS', 'AVG', 'TD', 'LNG', 'FUM']] = qb[['RK', 'CAR', 'YDS', 'AVG', 'TD', 'LNG', 'FUM']].apply(pd.to_numeric)
             elif stats_cat == 'receiving':
                 qb[['RK', 'REC', 'YDS', 'AVG', 'TD', 'LNG', 'FUM']] = qb[['RK', 'REC', 'YDS', 'AVG', 'TD', 'LNG', 'FUM']].apply(pd.to_numeric)
-            print(qb.columns)
-            print(qb.info())
+            #print(qb.columns)
+            #print(qb.info())
 
             conn = db.connect()  
             qb.to_sql(stats_cat, con=conn, if_exists='append',index=True)
