@@ -38,3 +38,9 @@ class Passing_yds(PassingBase):
 
     class Config:
         orm_mode = True
+
+class Passing_name(PassingBase):                   
+    NAME: str         
+
+    class Config:
+        orm_mode = True

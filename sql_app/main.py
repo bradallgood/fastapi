@@ -47,3 +47,8 @@ def read_passing(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
 def read_passing_yds(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     passing = crud.get_passing_yds(db, skip=skip, limit=limit)
     return passing
+
+@app.get("/distinct_name/", response_model=list[schemas.Passing_name])
+def get_distinct_name(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    passing = crud.get_distinctName(db, skip=skip, limit=limit)
+    return passing

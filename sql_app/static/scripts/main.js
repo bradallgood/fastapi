@@ -5,11 +5,27 @@ myHeading.textContent = "Hello world!";
 
 const apiUrl = 'http://localhost:8000/passing';
 
+const dropdown = document.getElementById('dropdown');
+
+// Function to populate the dropdown from API response
+async function populateDropdown() {
+  console.log('In populateDropdown')
+  var data1 = await fetchData();
+  console.log(data1)
+  data1.forEach(item => {
+    const option = document.createElement('option');
+    option.value = item.NAME; // Assuming the API response contains an 'id' field
+    option.textContent = item.NAME; // Assuming the API response contains a 'name' field
+    dropdown.appendChild(option);
+  });
+}
+
+
 // Function to fetch data from the API
 async function fetchData() {
     try {
         const response = await fetch(apiUrl);
-        const data = await response.json();
+        var data = await response.json();
         return data;
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -127,3 +143,5 @@ async function populateTable() {
 }
 
 window.onload = populateTable;
+console.log("Calling populateDropdown")
+populateDropdown;
